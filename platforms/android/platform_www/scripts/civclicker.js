@@ -53,8 +53,8 @@ var PATIENT_LIST = [
 
 // Declare variables here so they can be referenced later.
 var curCiv = {
-    civName: "Woodstock",
-    rulerName: "Orteil",
+    civName: "Gotham",
+    rulerName: "Bruce Wayne",
 
     zombie: {owned: 0},
     grave: {owned: 0},
@@ -2326,7 +2326,7 @@ function getGameSave() {
                 var reader = new FileReader();
                 reader.onloadend = function () {
                     console.log("Successful file read: " + this.result);
-                    var string1 =  this.result;
+                    var string1 = this.result;
                     if (!string1) {
                         console.log("Unable to find variables in localStorage. Attempting to load cookie.");
                         return load("cookie");
@@ -2404,6 +2404,7 @@ function getGameSave() {
     }, function (err) {
     });
 }
+
 function getGameSettings() {
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
         console.log('file system open: ' + fs.name);
@@ -2413,7 +2414,19 @@ function getGameSettings() {
                 var reader = new FileReader();
                 reader.onloadend = function () {
                     console.log("Successful file read: " + this.result);
-                    return this.result;
+                    var settingsString = this.result;
+                    var settingsVar = {};
+                    if (settingsString) {
+                        try {
+                            settingsVar = JSON.parse(settingsString);
+                        } catch (ignore) {
+                        }
+                    }
+                    if (isValid(settingsVar)) {
+                        settings = mergeObj(settings, settingsVar);
+                        textSize(settings.fontSize);
+                        console.log("SETTINGS LOADEDDDD and font changeddd");
+                    }
                 };
                 reader.readAsText(file);
             }, function (err) {
@@ -2423,6 +2436,7 @@ function getGameSettings() {
     }, function (err) {
     });
 }
+
 function load(loadType) {
     //define load variables
     var loadVar = {},
@@ -2542,7 +2556,7 @@ function load(loadType) {
     if (loadType === "import") {
         loadVar = importByInput(ui.find("#impexpField"));
     }
-    if(loadType !== 'localStorage'){
+    if (loadType !== 'localStorage') {
 
         saveVersion = mergeObj(saveVersion, loadVar.versionData);
         if (saveVersion.toNumber() > versionData.toNumber()) {
@@ -2765,7 +2779,7 @@ function deleteSave() {
 function renameCiv(newName) {
     //Prompts player, uses result as new civName
     while (!newName) {
-        newName = prompt("Please name your civilization", (newName || curCiv.civName || "Woodstock"));
+        newName = prompt("Please name your civilization", (newName || curCiv.civName || "Gotham"));
         if ((newName === null) && (curCiv.civName)) {
             return;
         } // Cancelled
@@ -2792,7 +2806,7 @@ function renameRuler(newName) {
     } // Reputations suck, don't they?
     //Prompts player, uses result as rulerName
     while (!newName || haveDeity(newName) !== false) {
-        newName = prompt("What is your name?", (newName || curCiv.rulerName || "Orteil"));
+        newName = prompt("What is your name?", (newName || curCiv.rulerName || "Bruce Wayne"));
         if ((newName === null) && (curCiv.rulerName)) {
             return;
         } // Cancelled

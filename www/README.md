@@ -23,3 +23,4 @@ This is a fork of the open source game CivClicker, an incremental game by David 
 * David Holley - CivClicker v1.0 original author.
 * Scott A. Colcord - Extensive refactoring and bug fixes to all files; jsutils.js file.
 * Luke Nickerson - revamped the UI design, fixed some bugs, tweaked some things
+* Erie M. Adames - Android implementation using Cordova
